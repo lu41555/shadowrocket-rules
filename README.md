@@ -31,9 +31,10 @@
 - `youtube-adblock-mitm-v2.sgmodule`
   - YouTube 实验版去广告模块。
   - 需要开启 MitM、安装并信任证书。
-  - 尝试改写 YouTube App/Web 的 `youtubei` 接口响应。
+  - 最小影响版：只尝试改写 `youtubei.googleapis.com` 的 `player` 和 `next` 响应。
   - 使用可访问的社区 `youtube.response.js`，并开启 `binary-body-mode=1` 处理 App 响应。
-  - 可能导致视频无法播放、推荐/评论异常，失效也很正常。
+  - 不拦截 `googlevideo.com`，不拦截 UDP/QUIC，降低全网断连风险。
+  - 可能无效，或导致 YouTube 播放/推荐异常，失效也很正常。
 
 ## 导入链接
 
@@ -189,7 +190,7 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adbloc
 注意：
 
 - 基础版不强制开启 MitM，但效果较弱。
-- 实验版需要 MitM，风险更高。
+- 实验版需要 MitM，已改成最小影响版，只处理 `youtubei.googleapis.com`。
 - YouTube App 去广告不一定稳定。
 - 如果出现视频无法播放、评论加载异常、登录异常，先关闭此模块测试。
 - 不建议一开始就开启多个去广告模块，容易互相冲突。
