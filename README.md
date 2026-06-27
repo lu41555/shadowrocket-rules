@@ -57,6 +57,8 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/shadowrocket-r
 
 导入主配置后，在 Shadowrocket 的策略组里分别选择节点：
 
+- `Japan`：选择你的日本节点。
+- `Singapore`：选择你的新加坡节点。
 - `YouTube`：选择适合 YouTube 的节点。
 - `Netflix`：选择支持奈飞解锁的节点。
 - `OpenAI`：选择适合 ChatGPT/OpenAI 的节点。
@@ -67,14 +69,29 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/shadowrocket-r
 - `Streaming`：选择适合 Disney+、Hulu、Max、Prime Video 等流媒体的节点。
 - `Gaming`：选择适合 Steam、Epic、暴雪、Riot 等游戏平台的节点。
 
+建议用法：
+
+- 先进入 `Japan` 分组，选择一个日本节点。
+- 再进入 `Singapore` 分组，选择一个新加坡节点。
+- 然后进入 `Netflix`、`YouTube`、`OpenAI` 等服务分组，在 `Japan`、`Singapore`、`PROXY` 之间选择。
+
+例如：
+
+- 主代理选新加坡。
+- `Japan` 分组里选日本节点。
+- `Netflix` 分组里选 `Japan`。
+- 这样 Netflix 会走日本节点，而不是主代理的新加坡节点。
+
 其他没有单独分组的国外网站，会走 Shadowrocket 当前默认的 `PROXY` 节点。
 
 如果你不想给不同网站分别选节点，使用简洁配置即可。
 
-如果某个策略组里没有显示节点，或选择后仍然走默认 `PROXY`，说明当前 Shadowrocket 版本没有把本地已导入节点自动展开到策略组里。此时需要把节点显示名称写进配置的对应策略组，例如：
+如果 `Japan` 或 `Singapore` 分组里没有显示节点，说明节点名称没有匹配到关键词。此时需要把节点显示名称写进配置的对应策略组，例如：
 
 ```ini
-Netflix = select,日本节点名称,新加坡节点名称,香港节点名称
+Japan = select,日本节点名称
+Singapore = select,新加坡节点名称
+Netflix = select,Japan,Singapore,PROXY
 ```
 
 节点名称必须和 Shadowrocket 里显示的名字一致。
