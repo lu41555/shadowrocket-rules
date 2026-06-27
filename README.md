@@ -32,6 +32,7 @@
   - YouTube 实验版去广告模块。
   - 需要开启 MitM、安装并信任证书。
   - 尝试改写 YouTube App/Web 的 `youtubei` 接口响应。
+  - 使用可访问的社区 `youtube.response.js`，并开启 `binary-body-mode=1` 处理 App 响应。
   - 可能导致视频无法播放、推荐/评论异常，失效也很正常。
 
 ## 导入链接
