@@ -22,6 +22,12 @@
   - 所有流量直连。
   - 当主配置导入错误、代理不可用、或网络异常时，用它临时恢复联网。
 
+- `youtube-adblock-basic.sgmodule`
+  - YouTube 基础去广告模块。
+  - 不需要开启 MitM 证书。
+  - 主要屏蔽常见广告、统计、追踪域名。
+  - 对 YouTube App 的效果不保证，YouTube 规则经常变化。
+
 ## 导入链接
 
 主配置：
@@ -40,6 +46,12 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/shadowrocket-c
 
 ```text
 https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/shadowrocket-recovery-direct.conf
+```
+
+YouTube 基础去广告模块：
+
+```text
+https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-basic.sgmodule
 ```
 
 ## 手机端导入方法
@@ -135,6 +147,29 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/shadowrocket-r
 
 3. 启用恢复配置后，所有流量会直连。
 4. 确认节点可用后，再切回主配置。
+
+## YouTube 去广告模块
+
+导入链接：
+
+```text
+https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-basic.sgmodule
+```
+
+使用方法：
+
+1. 打开 Shadowrocket。
+2. 进入模块/Modules。
+3. 添加模块订阅，填入上面的 Raw 链接。
+4. 启用 `YouTube AdBlock Basic`。
+5. 重新打开 YouTube App 或刷新网页。
+
+注意：
+
+- 这是基础版，不强制开启 MitM。
+- YouTube App 去广告不一定稳定。
+- 如果出现视频无法播放、评论加载异常、登录异常，先关闭此模块测试。
+- 不建议一开始就开启多个去广告模块，容易互相冲突。
 
 ## 注意事项
 
