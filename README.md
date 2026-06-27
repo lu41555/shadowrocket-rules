@@ -71,6 +71,14 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/shadowrocket-r
 
 如果你不想给不同网站分别选节点，使用简洁配置即可。
 
+如果某个策略组里没有显示节点，或选择后仍然走默认 `PROXY`，说明当前 Shadowrocket 版本没有把本地已导入节点自动展开到策略组里。此时需要把节点显示名称写进配置的对应策略组，例如：
+
+```ini
+Netflix = select,日本节点名称,新加坡节点名称,香港节点名称
+```
+
+节点名称必须和 Shadowrocket 里显示的名字一致。
+
 ## 分流逻辑
 
 规则顺序如下：
