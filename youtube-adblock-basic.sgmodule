@@ -1,0 +1,40 @@
+#!name=YouTube AdBlock Basic
+#!desc=Basic YouTube ad and tracking filter for Shadowrocket. No MITM required. Effect may vary with YouTube app/web changes.
+#!author=lu41555
+#!homepage=https://github.com/lu41555/shadowrocket-rules
+
+[Rule]
+# Google/YouTube ad services
+DOMAIN-SUFFIX,doubleclick.net,REJECT
+DOMAIN-SUFFIX,googleadservices.com,REJECT
+DOMAIN-SUFFIX,googlesyndication.com,REJECT
+DOMAIN-SUFFIX,googletagservices.com,REJECT
+DOMAIN-SUFFIX,google-analytics.com,REJECT
+DOMAIN-SUFFIX,ads.youtube.com,REJECT
+DOMAIN-SUFFIX,pagead2.googlesyndication.com,REJECT
+DOMAIN-SUFFIX,adservice.google.com,REJECT
+DOMAIN-SUFFIX,adservice.google.com.hk,REJECT
+DOMAIN-SUFFIX,adservice.google.com.tw,REJECT
+DOMAIN-SUFFIX,adservice.google.co.jp,REJECT
+
+# YouTube tracking and stats endpoints
+DOMAIN-SUFFIX,s.youtube.com,REJECT
+DOMAIN-SUFFIX,video-stats.l.google.com,REJECT
+DOMAIN-SUFFIX,play.google.com/log,REJECT
+DOMAIN-SUFFIX,app-measurement.com,REJECT
+DOMAIN-SUFFIX,firebaseinstallations.googleapis.com,REJECT
+DOMAIN-SUFFIX,firebaselogging.googleapis.com,REJECT
+
+[URL Rewrite]
+# Web YouTube ad/tracking endpoints. Some app traffic may ignore these without MITM.
+^https?:\/\/(www\.)?youtube\.com\/api\/stats\/ads - reject
+^https?:\/\/(www\.)?youtube\.com\/pagead\/ - reject
+^https?:\/\/(www\.)?youtube\.com\/ptracking - reject
+^https?:\/\/(www\.)?youtube\.com\/youtubei\/v1\/log_event - reject
+^https?:\/\/(www\.)?youtube\.com\/youtubei\/v1\/player\/ad_break - reject
+^https?:\/\/(www\.)?youtube\.com\/get_midroll_ - reject
+^https?:\/\/(www\.)?youtube\.com\/get_video_info.*&adformat= - reject
+^https?:\/\/(www\.)?youtube\.com\/get_video_info.*ad3_module - reject
+
+[MITM]
+# Basic version does not require MITM.
