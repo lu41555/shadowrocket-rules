@@ -1,21 +1,30 @@
 #!name=YouTube AdBlock MITM Experimental
-#!desc=Experimental YouTube App/Web ad filter. Requires MitM certificate. May break playback if YouTube changes API responses.
+#!desc=Experimental YouTube App/Web ad filter. Requires MitM certificate. Uses youtubei response rewriting; may break when YouTube changes APIs.
 #!author=lu41555
 #!homepage=https://github.com/lu41555/shadowrocket-rules
 
-[Script]
-YouTube Player = type=http-response,pattern=^https:\/\/(www\.youtube\.com|m\.youtube\.com|youtubei\.googleapis\.com)\/youtubei\/v1\/player,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm.js,timeout=10,enable=true
-YouTube Next = type=http-response,pattern=^https:\/\/(www\.youtube\.com|m\.youtube\.com|youtubei\.googleapis\.com)\/youtubei\/v1\/next,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm.js,timeout=10,enable=true
-YouTube Browse = type=http-response,pattern=^https:\/\/(www\.youtube\.com|m\.youtube\.com|youtubei\.googleapis\.com)\/youtubei\/v1\/browse,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm.js,timeout=10,enable=true
-YouTube Search = type=http-response,pattern=^https:\/\/(www\.youtube\.com|m\.youtube\.com|youtubei\.googleapis\.com)\/youtubei\/v1\/search,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm.js,timeout=10,enable=true
-YouTube Reel = type=http-response,pattern=^https:\/\/(www\.youtube\.com|m\.youtube\.com|youtubei\.googleapis\.com)\/youtubei\/v1\/reel\/,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm.js,timeout=10,enable=true
+[Rule]
+AND,((DOMAIN,youtubei.googleapis.com),(PROTOCOL,UDP)),REJECT
+AND,((DOMAIN-SUFFIX,googlevideo.com),(PROTOCOL,UDP)),REJECT-200
 
 [URL Rewrite]
-^https:\/\/(www\.youtube\.com|m\.youtube\.com)\/api\/stats\/ads - reject
-^https:\/\/(www\.youtube\.com|m\.youtube\.com)\/pagead\/ - reject
-^https:\/\/(www\.youtube\.com|m\.youtube\.com)\/ptracking - reject
-^https:\/\/(www\.youtube\.com|m\.youtube\.com)\/youtubei\/v1\/log_event - reject
-^https:\/\/(www\.youtube\.com|m\.youtube\.com)\/get_midroll_ - reject
+^https?:\/\/[\w-]+\.googlevideo\.com\/initplayback(\?.*oad=.*)?$ - reject-200
+^https?:\/\/[\w-]+\.googlevideo\.com\/(?!(dclk_video_ads|videoplayback\?)).+&oad - reject-200
+^https?:\/\/[\w-]+\.googlevideo\.com\/.*&pltype=ad&.*$ - reject-200
+^https?:\/\/(www|s)\.youtube\.com\/api\/stats\/ads - reject-200
+^https?:\/\/(www|s)\.youtube\.com\/api\/stats\/qoe\?adcontext - reject-200
+^https?:\/\/(www|s)\.youtube\.com\/(pagead|ptracking) - reject-200
+^https?:\/\/(www|s)\.youtube\.com\/.*ad_break.* - reject-200
+^https?:\/\/(www|s)\.youtube\.com\/.*ad_.+?\.js - reject-200
+^https?:\/\/s\.youtube\.com\/api\/stats\/adsense.* - reject-200
+^https?:\/\/s\.youtube\.com\/api\/stats\/gfp_.* - reject-200
+^https?:\/\/(www|s)\.youtube\.com\/get_midroll - reject-200
+^https?:\/\/ad\.doubleclick\.net\/.* - reject-200
+^https?:\/\/[\w-]+\.doubleclick\.net\/.* - reject-200
+
+[Script]
+# YouTube App commonly uses binary/protobuf-like youtubei traffic. This script is a community-maintained youtubei response rewriter.
+youtube.response = type=http-response,pattern=^https:\/\/youtubei\.googleapis\.com\/youtubei\/v1\/(browse|next|player|search|reel\/reel_watch_sequence|guide|account\/get_setting|get_watch)(\?(.*))?$,requires-body=1,max-size=-1,binary-body-mode=1,engine=jsc,script-path=https://raw.githubusercontent.com/Maasea/sgmodule/master/Script/Youtube/youtube.response.js,argument={"lyricLang":"off","captionLang":"off","blockUpload":false,"blockImmersive":true,"debug":false}
 
 [MITM]
-hostname = %APPEND% www.youtube.com, m.youtube.com, youtubei.googleapis.com
+hostname = %APPEND% www.youtube.com, s.youtube.com, tv.youtube.com, music.youtube.com, youtubei.googleapis.com, -redirector*.googlevideo.com, *.googlevideo.com, *.doubleclick.net, *.ytimg.com
