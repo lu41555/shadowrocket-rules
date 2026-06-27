@@ -59,6 +59,17 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/shadowrocket-r
 
 - `Japan`：选择你的日本节点。
 - `Singapore`：选择你的新加坡节点。
+- `UnitedStates`：选择你的美国节点。
+- `HongKong`：选择你的香港节点。
+- `Taiwan`：选择你的台湾节点。
+- `Korea`：选择你的韩国节点。
+- `UnitedKingdom`：选择你的英国节点。
+- `Germany`：选择你的德国节点。
+- `France`：选择你的法国节点。
+- `Canada`：选择你的加拿大节点。
+- `Australia`：选择你的澳大利亚节点。
+- `Netherlands`：选择你的荷兰节点。
+- `India`：选择你的印度节点。
 - `YouTube`：选择适合 YouTube 的节点。
 - `Netflix`：选择支持奈飞解锁的节点。
 - `OpenAI`：选择适合 ChatGPT/OpenAI 的节点。
@@ -71,14 +82,15 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/shadowrocket-r
 
 建议用法：
 
-- 先进入 `Japan` 分组，选择一个日本节点。
-- 再进入 `Singapore` 分组，选择一个新加坡节点。
-- 然后进入 `Netflix`、`YouTube`、`OpenAI` 等服务分组，在 `Japan`、`Singapore`、`PROXY` 之间选择。
+- 先进入国家/地区分组，例如 `Japan`、`Singapore`、`UnitedStates`、`HongKong`、`Australia`，分别选择对应地区节点。
+- 再进入 `Netflix`、`YouTube`、`OpenAI` 等服务分组，在国家/地区分组和 `PROXY` 之间选择。
 
 例如：
 
 - 主代理选新加坡。
 - `Japan` 分组里选日本节点。
+- `UnitedStates` 分组里选美国节点。
+- `Australia` 分组里选澳大利亚节点。
 - `Netflix` 分组里选 `Japan`。
 - 这样 Netflix 会走日本节点，而不是主代理的新加坡节点。
 
@@ -86,12 +98,15 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/shadowrocket-r
 
 如果你不想给不同网站分别选节点，使用简洁配置即可。
 
-如果 `Japan` 或 `Singapore` 分组里没有显示节点，说明节点名称没有匹配到关键词。此时需要把节点显示名称写进配置的对应策略组，例如：
+如果某个国家/地区分组里没有显示节点，说明节点名称没有匹配到关键词。此时需要把节点显示名称写进配置的对应策略组，例如：
 
 ```ini
 Japan = select,日本节点名称
 Singapore = select,新加坡节点名称
-Netflix = select,Japan,Singapore,PROXY
+UnitedStates = select,美国节点名称
+HongKong = select,香港节点名称
+Australia = select,澳大利亚节点名称
+Netflix = select,Japan,Singapore,UnitedStates,HongKong,Australia,PROXY
 ```
 
 节点名称必须和 Shadowrocket 里显示的名字一致。
