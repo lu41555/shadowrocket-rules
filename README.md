@@ -69,19 +69,20 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adbloc
 
 导入主配置后，在 Shadowrocket 的策略组里分别选择节点：
 
-- `Japan`：选择你的日本节点。
-- `Singapore`：选择你的新加坡节点。
-- `UnitedStates`：选择你的美国节点。
-- `HongKong`：选择你的香港节点。
-- `Taiwan`：选择你的台湾节点。
-- `Korea`：选择你的韩国节点。
-- `UnitedKingdom`：选择你的英国节点。
-- `Germany`：选择你的德国节点。
-- `France`：选择你的法国节点。
-- `Canada`：选择你的加拿大节点。
-- `Australia`：选择你的澳大利亚节点。
-- `Netherlands`：选择你的荷兰节点。
-- `India`：选择你的印度节点。
+- `PROXY`：主代理，默认手动选择。
+- `日本节点`：自动筛选并测试日本节点。
+- `新加坡节点`：自动筛选并测试新加坡节点。
+- `美国节点`：自动筛选并测试美国节点。
+- `香港节点`：自动筛选并测试香港节点。
+- `台湾节点`：自动筛选并测试台湾节点。
+- `韩国节点`：自动筛选并测试韩国节点。
+- `英国节点`：自动筛选并测试英国节点。
+- `德国节点`：自动筛选并测试德国节点。
+- `法国节点`：自动筛选并测试法国节点。
+- `加拿大节点`：自动筛选并测试加拿大节点。
+- `澳大利亚节点`：自动筛选并测试澳大利亚节点。
+- `荷兰节点`：自动筛选并测试荷兰节点。
+- `印度节点`：自动筛选并测试印度节点。
 - `YouTube`：选择适合 YouTube 的节点。
 - `Netflix`：选择支持奈飞解锁的节点。
 - `OpenAI`：选择适合 ChatGPT/OpenAI 的节点。
@@ -94,16 +95,16 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adbloc
 
 建议用法：
 
-- 先进入国家/地区分组，例如 `Japan`、`Singapore`、`UnitedStates`、`HongKong`、`Australia`，分别选择对应地区节点。
-- 再进入 `Netflix`、`YouTube`、`OpenAI` 等服务分组，在国家/地区分组和 `PROXY` 之间选择。
+- 先确认 `日本节点`、`新加坡节点`、`美国节点`、`香港节点` 等地区组里能看到节点，并测速正常。
+- 再进入 `Netflix`、`YouTube`、`OpenAI` 等服务分组，在地区组和 `PROXY` 之间选择。
 
 例如：
 
 - 主代理选新加坡。
-- `Japan` 分组里选日本节点。
-- `UnitedStates` 分组里选美国节点。
-- `Australia` 分组里选澳大利亚节点。
-- `Netflix` 分组里选 `Japan`。
+- `日本节点` 分组自动筛出日本节点。
+- `美国节点` 分组自动筛出美国节点。
+- `澳大利亚节点` 分组自动筛出澳大利亚节点。
+- `Netflix` 分组里选 `日本节点`。
 - 这样 Netflix 会走日本节点，而不是主代理的新加坡节点。
 
 其他没有单独分组的国外网站，会走 Shadowrocket 当前默认的 `PROXY` 节点。
@@ -113,12 +114,12 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adbloc
 如果某个国家/地区分组里没有显示节点，说明节点名称没有匹配到关键词。此时需要把节点显示名称写进配置的对应策略组，例如：
 
 ```ini
-Japan = select,日本节点名称
-Singapore = select,新加坡节点名称
-UnitedStates = select,美国节点名称
-HongKong = select,香港节点名称
-Australia = select,澳大利亚节点名称
-Netflix = select,Japan,Singapore,UnitedStates,HongKong,Australia,PROXY
+日本节点 = select,日本节点名称
+新加坡节点 = select,新加坡节点名称
+美国节点 = select,美国节点名称
+香港节点 = select,香港节点名称
+澳大利亚节点 = select,澳大利亚节点名称
+Netflix = select,PROXY,香港节点,台湾节点,日本节点,新加坡节点,美国节点,澳大利亚节点
 ```
 
 节点名称必须和 Shadowrocket 里显示的名字一致。
