@@ -28,6 +28,12 @@
   - 主要屏蔽常见广告、统计、追踪域名。
   - 对 YouTube App 的效果不保证，YouTube 规则经常变化。
 
+- `youtube-adblock-mitm.sgmodule`
+  - YouTube 实验版去广告模块。
+  - 需要开启 MitM、安装并信任证书。
+  - 尝试改写 YouTube App/Web 的 `youtubei` 接口响应。
+  - 可能导致视频无法播放、推荐/评论异常，失效也很正常。
+
 ## 导入链接
 
 主配置：
@@ -52,6 +58,12 @@ YouTube 基础去广告模块：
 
 ```text
 https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-basic.sgmodule
+```
+
+YouTube 实验版 MitM 去广告模块：
+
+```text
+https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm.sgmodule
 ```
 
 ## 手机端导入方法
@@ -151,10 +163,16 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/shadowrocket-r
 
 ## YouTube 去广告模块
 
-导入链接：
+基础版导入链接：
 
 ```text
 https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-basic.sgmodule
+```
+
+实验版 MitM 导入链接：
+
+```text
+https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm.sgmodule
 ```
 
 使用方法：
@@ -162,12 +180,15 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adbloc
 1. 打开 Shadowrocket。
 2. 进入模块/Modules。
 3. 添加模块订阅，填入上面的 Raw 链接。
-4. 启用 `YouTube AdBlock Basic`。
-5. 重新打开 YouTube App 或刷新网页。
+4. 基础版启用 `YouTube AdBlock Basic`。
+5. 实验版启用 `YouTube AdBlock MITM Experimental`。
+6. 如果使用实验版，需要在 Shadowrocket 开启 MitM，安装并信任证书。
+7. 重新打开 YouTube App 或刷新网页。
 
 注意：
 
-- 这是基础版，不强制开启 MitM。
+- 基础版不强制开启 MitM，但效果较弱。
+- 实验版需要 MitM，风险更高。
 - YouTube App 去广告不一定稳定。
 - 如果出现视频无法播放、评论加载异常、登录异常，先关闭此模块测试。
 - 不建议一开始就开启多个去广告模块，容易互相冲突。
