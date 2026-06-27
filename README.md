@@ -28,7 +28,7 @@
   - 主要屏蔽常见广告、统计、追踪域名。
   - 对 YouTube App 的效果不保证，YouTube 规则经常变化。
 
-- `youtube-adblock-mitm.sgmodule`
+- `youtube-adblock-mitm-v2.sgmodule`
   - YouTube 实验版去广告模块。
   - 需要开启 MitM、安装并信任证书。
   - 尝试改写 YouTube App/Web 的 `youtubei` 接口响应。
@@ -64,7 +64,7 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adbloc
 YouTube 实验版 MitM 去广告模块：
 
 ```text
-https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm.sgmodule
+https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm-v2.sgmodule
 ```
 
 ## 手机端导入方法
@@ -173,7 +173,7 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adbloc
 实验版 MitM 导入链接：
 
 ```text
-https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm.sgmodule
+https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm-v2.sgmodule
 ```
 
 使用方法：
