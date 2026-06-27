@@ -1,0 +1,21 @@
+#!name=YouTube AdBlock MITM Experimental
+#!desc=Experimental YouTube App/Web ad filter. Requires MitM certificate. May break playback if YouTube changes API responses.
+#!author=lu41555
+#!homepage=https://github.com/lu41555/shadowrocket-rules
+
+[Script]
+YouTube Player = type=http-response,pattern=^https:\/\/(www\.youtube\.com|m\.youtube\.com|youtubei\.googleapis\.com)\/youtubei\/v1\/player,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm.js,timeout=10,enable=true
+YouTube Next = type=http-response,pattern=^https:\/\/(www\.youtube\.com|m\.youtube\.com|youtubei\.googleapis\.com)\/youtubei\/v1\/next,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm.js,timeout=10,enable=true
+YouTube Browse = type=http-response,pattern=^https:\/\/(www\.youtube\.com|m\.youtube\.com|youtubei\.googleapis\.com)\/youtubei\/v1\/browse,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm.js,timeout=10,enable=true
+YouTube Search = type=http-response,pattern=^https:\/\/(www\.youtube\.com|m\.youtube\.com|youtubei\.googleapis\.com)\/youtubei\/v1\/search,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm.js,timeout=10,enable=true
+YouTube Reel = type=http-response,pattern=^https:\/\/(www\.youtube\.com|m\.youtube\.com|youtubei\.googleapis\.com)\/youtubei\/v1\/reel\/,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adblock-mitm.js,timeout=10,enable=true
+
+[URL Rewrite]
+^https:\/\/(www\.youtube\.com|m\.youtube\.com)\/api\/stats\/ads - reject
+^https:\/\/(www\.youtube\.com|m\.youtube\.com)\/pagead\/ - reject
+^https:\/\/(www\.youtube\.com|m\.youtube\.com)\/ptracking - reject
+^https:\/\/(www\.youtube\.com|m\.youtube\.com)\/youtubei\/v1\/log_event - reject
+^https:\/\/(www\.youtube\.com|m\.youtube\.com)\/get_midroll_ - reject
+
+[MITM]
+hostname = %APPEND% www.youtube.com, m.youtube.com, youtubei.googleapis.com
