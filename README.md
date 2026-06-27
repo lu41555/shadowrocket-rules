@@ -11,6 +11,12 @@
   - YouTube、Netflix、OpenAI、GitHub、Telegram、X、TikTok、Discord、Reddit、Streaming、Spotify、Twitch、Gaming、Microsoft、Amazon、Cloudflare 等服务单独分组。
   - 每个分组的节点由你在 Shadowrocket 里手动选择。
 
+- `shadowrocket-cn-direct-overseas-proxy-simple.conf`
+  - 简洁配置。
+  - 没有单独服务分流策略组。
+  - 国内域名和中国大陆 IP 直连。
+  - 其他所有流量走 Shadowrocket 当前选中的代理节点。
+
 - `shadowrocket-recovery-direct.conf`
   - 恢复配置。
   - 所有流量直连。
@@ -22,6 +28,12 @@
 
 ```text
 https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/shadowrocket-cn-direct-overseas-proxy.conf
+```
+
+简洁配置：
+
+```text
+https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/shadowrocket-cn-direct-overseas-proxy-simple.conf
 ```
 
 恢复配置：
@@ -56,6 +68,8 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/shadowrocket-r
 - `Gaming`：选择适合 Steam、Epic、暴雪、Riot 等游戏平台的节点。
 
 其他没有单独分组的国外网站，会走 Shadowrocket 当前默认的 `PROXY` 节点。
+
+如果你不想给不同网站分别选节点，使用简洁配置即可。
 
 ## 分流逻辑
 
