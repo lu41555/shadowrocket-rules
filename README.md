@@ -10,6 +10,9 @@
   - 国外网站走代理。
   - YouTube、Netflix、OpenAI、GitHub、Telegram、X、TikTok、Discord、Reddit、Streaming、Spotify、Twitch、Gaming、Microsoft、Amazon、Cloudflare 等服务单独分组。
   - 每个分组的节点由你在 Shadowrocket 里手动选择。
+  - 不包含自动测速或故障转移策略组，节点固定不自动切换。
+  - 所有 `100.*` 地址（`100.0.0.0/8`）固定走手动选择的 `PROXY` 节点。
+  - `*.tailscale.com`、`*.tailscale.io` 和 `*.ts.net` 固定走 `PROXY`。
 
 - `shadowrocket-cn-direct-overseas-proxy-simple.conf`
   - 简洁配置。
@@ -17,6 +20,8 @@
   - 国内域名和中国大陆 IP 直连。
   - 其他所有流量走 Shadowrocket 首页当前选中的具体代理节点。
   - 首页不要选择自动测速、故障转移或订阅分组，否则可能自动切换。
+  - 所有 `100.*` 地址（`100.0.0.0/8`）固定走首页当前选中的代理节点。
+  - `*.tailscale.com`、`*.tailscale.io` 和 `*.ts.net` 固定走当前代理节点。
 
 - `shadowrocket-recovery-direct.conf`
   - 恢复配置。
@@ -86,7 +91,6 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adbloc
 
 - `PROXY`：主代理，手动选择，固定不自动切换。
 - `日本节点`、`新加坡节点`、`美国节点`、`香港节点` 等地区节点：手动选择，固定不自动切换。
-- `日本自动`、`新加坡自动`、`美国自动`、`香港自动` 等地区自动组：只有你手动选中它们时，才会自动测速切换。
 - `YouTube`：选择适合 YouTube 的节点。
 - `Netflix`：选择支持奈飞解锁的节点。
 - `OpenAI`：选择适合 ChatGPT/OpenAI 的节点。
@@ -100,9 +104,8 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adbloc
 建议用法：
 
 - 先进入 `日本节点`、`新加坡节点`、`美国节点`、`香港节点` 等地区组，手动选好固定节点。
-- 再进入 `Netflix`、`YouTube`、`OpenAI` 等服务分组，在 `PROXY`、地区节点、地区自动组之间选择。
-- 默认建议选择 `地区节点`，这样不会自动更换。
-- 如果你想让某个服务自动选择延迟低的同地区节点，再选择 `地区自动`。
+- 再进入 `Netflix`、`YouTube`、`OpenAI` 等服务分组，在 `PROXY` 和地区节点之间选择。
+- 所有策略组都是手动选择，不会自动测速或自动更换节点。
 
 例如：
 
@@ -112,7 +115,6 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adbloc
 - `澳大利亚节点` 分组里手动选一个澳大利亚节点。
 - `Netflix` 分组里选 `日本节点`。
 - 这样 Netflix 会走日本节点，而不是主代理的新加坡节点。
-- 如果 `Netflix` 分组里选 `日本自动`，才会在日本节点之间自动测速切换。
 
 其他没有单独分组的国外网站，会走 Shadowrocket 当前默认的 `PROXY` 节点。
 
@@ -143,11 +145,15 @@ Netflix = select,PROXY,香港节点,台湾节点,日本节点,新加坡节点,�
 规则顺序如下：
 
 1. 指定国外服务分组优先匹配。
-2. 局域网、本机地址直连。
-3. 常见国内域名直连。
-4. Apple 中国大陆常用服务直连。
-5. 中国大陆 IP 使用 `GEOIP,CN,DIRECT` 直连。
-6. 其他所有流量使用 `FINAL,PROXY` 走代理。
+2. Tailscale 域名 `*.tailscale.com`、`*.tailscale.io`、`*.ts.net` 使用 `PROXY`。
+3. 所有 `100.*` 地址（`100.0.0.0/8`）使用 `PROXY` 走手动固定节点。
+4. 局域网、本机地址直连。
+5. 常见国内域名直连。
+6. Apple 中国大陆常用服务直连。
+7. 中国大陆 IP 使用 `GEOIP,CN,DIRECT` 直连。
+8. 其他所有流量使用 `FINAL,PROXY` 走代理。
+
+注意：`100.0.0.0/8` 的范围大于 Tailscale 通常使用的 `100.64.0.0/10`。因此，不属于 Tailscale、但以 `100.` 开头的公网地址也会走代理。
 
 ## 出问题时怎么恢复
 
