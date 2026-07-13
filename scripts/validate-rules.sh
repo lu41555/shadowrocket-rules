@@ -47,6 +47,34 @@ if grep -Eq '^[^#].* = (url-test|fallback),' "$full"; then
   fail "$full: automatic proxy policy group found"
 fi
 
+awk '
+  function is_same_or_child(child, parent, suffix) {
+    if (child == parent) return 1
+    suffix = "." parent
+    return length(child) > length(suffix) && substr(child, length(child) - length(suffix) + 1) == suffix
+  }
+  BEGIN { in_rules = 0; bad = 0; seen_count = 0 }
+  /^\[Rule\]$/ { in_rules = 1; next }
+  in_rules && /^\[/ { in_rules = 0 }
+  in_rules && /^DOMAIN-SUFFIX,/ {
+    count = split($0, fields, ",")
+    domain = fields[2]
+    policy = fields[3]
+    for (i = 1; i <= seen_count; i++) {
+      if (is_same_or_child(domain, seen_domain[i]) && policy != seen_policy[i]) {
+        print "FAIL: " FILENAME ": line " seen_line[i] " " seen_domain[i] " -> " seen_policy[i] \
+          " shadows line " FNR " " domain " -> " policy > "/dev/stderr"
+        bad = 1
+      }
+    }
+    seen_count++
+    seen_domain[seen_count] = domain
+    seen_policy[seen_count] = policy
+    seen_line[seen_count] = FNR
+  }
+  END { exit bad }
+' "$full" || failures=$((failures + 1))
+
 youtube_line=$(line_exact "$full" 'DOMAIN-SUFFIX,youtubei.googleapis.com,YouTube')
 google_line=$(line_exact "$full" 'DOMAIN-SUFFIX,googleapis.com,Google')
 if [ -z "$youtube_line" ] || [ -z "$google_line" ] || [ "$youtube_line" -ge "$google_line" ]; then
