@@ -11,7 +11,7 @@
   - YouTube、Netflix、OpenAI、GitHub、Telegram、X、TikTok、Discord、Reddit、Streaming、Spotify、Twitch、Gaming、Microsoft、Amazon、Cloudflare 等服务单独分组。
   - 每个分组的节点由你在 Shadowrocket 里手动选择。
   - 不包含自动测速或故障转移策略组，节点固定不自动切换。
-  - 所有 `100.*` 地址（`100.0.0.0/8`）固定走手动选择的 `PROXY` 节点。
+  - 除本机 MagicDNS `100.100.100.100` 外，所有 `100.*` 地址固定走手动选择的 `PROXY` 节点。
   - `*.tailscale.com`、`*.tailscale.io` 和 `*.ts.net` 固定走 `PROXY`。
 
 - `shadowrocket-cn-direct-overseas-proxy-simple.conf`
@@ -20,7 +20,7 @@
   - 国内域名和中国大陆 IP 直连。
   - 其他所有流量走 Shadowrocket 首页当前选中的具体代理节点。
   - 首页不要选择自动测速、故障转移或订阅分组，否则可能自动切换。
-  - 所有 `100.*` 地址（`100.0.0.0/8`）固定走首页当前选中的代理节点。
+  - 除本机 MagicDNS `100.100.100.100` 外，所有 `100.*` 地址固定走首页当前选中的代理节点。
   - `*.tailscale.com`、`*.tailscale.io` 和 `*.ts.net` 固定走当前代理节点。
 
 - `shadowrocket-recovery-direct.conf`
@@ -31,14 +31,14 @@
 - `youtube-adblock-basic.sgmodule`
   - YouTube 基础去广告模块。
   - 不需要开启 MitM 证书。
-  - 主要屏蔽常见广告、统计、追踪域名。
+  - 只保留较明确的 YouTube 和广告服务规则，减少对其他 App 的影响。
   - 对 YouTube App 的效果不保证，YouTube 规则经常变化。
 
 - `youtube-adblock-mitm-v2.sgmodule`
   - YouTube 实验版去广告模块。
   - 需要开启 MitM、安装并信任证书。
   - 最小影响版：只尝试改写 `youtubei.googleapis.com` 的 `player` 和 `next` 响应。
-  - 使用可访问的社区 `youtube.response.js`，并开启 `binary-body-mode=1` 处理 App 响应。
+  - 使用固定 Git 提交版本的社区 `youtube.response.js`，并开启 `binary-body-mode=1` 处理 App 响应。
   - 不拦截 `googlevideo.com`，不拦截 UDP/QUIC，降低全网断连风险。
   - 可能无效，或导致 YouTube 播放/推荐异常，失效也很正常。
 
@@ -146,14 +146,15 @@ Netflix = select,PROXY,香港节点,台湾节点,日本节点,新加坡节点,�
 
 1. 指定国外服务分组优先匹配。
 2. Tailscale 域名 `*.tailscale.com`、`*.tailscale.io`、`*.ts.net` 使用 `PROXY`。
-3. 所有 `100.*` 地址（`100.0.0.0/8`）使用 `PROXY` 走手动固定节点。
-4. 局域网、本机地址直连。
-5. 常见国内域名直连。
-6. Apple 中国大陆常用服务直连。
-7. 中国大陆 IP 使用 `GEOIP,CN,DIRECT` 直连。
-8. 其他所有流量使用 `FINAL,PROXY` 走代理。
+3. Tailscale 本机 MagicDNS `100.100.100.100/32` 直连。
+4. 其余所有 `100.*` 地址（`100.0.0.0/8`）使用 `PROXY` 走手动固定节点。
+5. 局域网、本机地址直连。
+6. 常见国内域名直连。
+7. Apple 中国大陆常用服务直连。
+8. 中国大陆 IP 使用 `GEOIP,CN,DIRECT` 直连。
+9. 其他所有流量使用 `FINAL,PROXY` 走代理。
 
-注意：`100.0.0.0/8` 的范围大于 Tailscale 通常使用的 `100.64.0.0/10`。因此，不属于 Tailscale、但以 `100.` 开头的公网地址也会走代理。
+注意：`100.100.100.100/32` 是 `100.0.0.0/8` 中唯一的直连例外，用于设备本地 MagicDNS。`100.0.0.0/8` 的范围大于 Tailscale 通常使用的 `100.64.0.0/10`，所以不属于 Tailscale、但以 `100.` 开头的公网地址也会走代理。
 
 ## 出问题时怎么恢复
 
@@ -167,7 +168,6 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/shadowrocket-r
 ```
 
 3. 启用恢复配置后，所有流量会直连。
-4. 确认节点可用后，再切回主配置。
 
 ## YouTube 去广告模块
 
@@ -197,6 +197,8 @@ https://raw.githubusercontent.com/lu41555/shadowrocket-rules/main/youtube-adbloc
 
 - 基础版不强制开启 MitM，但效果较弱。
 - 实验版需要 MitM，已改成最小影响版，只处理 `youtubei.googleapis.com`。
+- MitM 会解密匹配的 YouTube HTTPS 响应，并执行固定到提交 `bbd30c9318e06e129a71abae1be3812f25f43e3f` 的第三方脚本。
+- 只有在你信任该脚本并理解 HTTPS 解密风险时才启用实验版。
 - YouTube App 去广告不一定稳定。
 - 如果出现视频无法播放、评论加载异常、登录异常，先关闭此模块测试。
 - 不建议一开始就开启多个去广告模块，容易互相冲突。

@@ -1,0 +1,25 @@
+name: Validate Shadowrocket rules
+
+on:
+  push:
+    paths:
+      - '*.conf'
+      - '*.sgmodule'
+      - 'README.md'
+      - 'scripts/validate-rules.sh'
+      - '.github/workflows/validate-rules.yml'
+  pull_request:
+    paths:
+      - '*.conf'
+      - '*.sgmodule'
+      - 'README.md'
+      - 'scripts/validate-rules.sh'
+      - '.github/workflows/validate-rules.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate configuration and modules
+        run: sh scripts/validate-rules.sh

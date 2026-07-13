@@ -9,7 +9,6 @@ DOMAIN-SUFFIX,doubleclick.net,REJECT
 DOMAIN-SUFFIX,googleadservices.com,REJECT
 DOMAIN-SUFFIX,googlesyndication.com,REJECT
 DOMAIN-SUFFIX,googletagservices.com,REJECT
-DOMAIN-SUFFIX,google-analytics.com,REJECT
 DOMAIN-SUFFIX,ads.youtube.com,REJECT
 DOMAIN-SUFFIX,pagead2.googlesyndication.com,REJECT
 DOMAIN-SUFFIX,adservice.google.com,REJECT
@@ -20,10 +19,6 @@ DOMAIN-SUFFIX,adservice.google.co.jp,REJECT
 # YouTube tracking and stats endpoints
 DOMAIN-SUFFIX,s.youtube.com,REJECT
 DOMAIN-SUFFIX,video-stats.l.google.com,REJECT
-DOMAIN-SUFFIX,play.google.com/log,REJECT
-DOMAIN-SUFFIX,app-measurement.com,REJECT
-DOMAIN-SUFFIX,firebaseinstallations.googleapis.com,REJECT
-DOMAIN-SUFFIX,firebaselogging.googleapis.com,REJECT
 
 [URL Rewrite]
 # Web YouTube ad/tracking endpoints. Some app traffic may ignore these without MITM.
