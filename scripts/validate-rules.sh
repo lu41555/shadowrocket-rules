@@ -27,18 +27,24 @@ mitm='youtube-adblock-mitm-v2.sgmodule'
 
 for file in "$full" "$simple"; do
   assert_count "$file" 'IP-CIDR,100.100.100.100/32,DIRECT,no-resolve' 1
+  assert_count "$file" 'IP-CIDR,100.64.0.0/10,DIRECT,no-resolve' 1
   assert_count "$file" 'IP-CIDR,100.0.0.0/8,PROXY,no-resolve' 1
-  assert_count "$file" 'DOMAIN-SUFFIX,tailscale.com,PROXY' 1
-  assert_count "$file" 'DOMAIN-SUFFIX,tailscale.io,PROXY' 1
-  assert_count "$file" 'DOMAIN-SUFFIX,ts.net,PROXY' 1
+  assert_count "$file" 'DOMAIN-SUFFIX,tailscale.com,DIRECT' 1
+  assert_count "$file" 'DOMAIN-SUFFIX,tailscale.io,DIRECT' 1
+  assert_count "$file" 'DOMAIN-SUFFIX,ts.net,DIRECT' 1
+  assert_count "$file" 'DOMAIN-SUFFIX,tailscale.com,PROXY' 0
+  assert_count "$file" 'DOMAIN-SUFFIX,tailscale.io,PROXY' 0
+  assert_count "$file" 'DOMAIN-SUFFIX,ts.net,PROXY' 0
 
   quad_line=$(line_exact "$file" 'IP-CIDR,100.100.100.100/32,DIRECT,no-resolve')
+  tailscale_line=$(line_exact "$file" 'IP-CIDR,100.64.0.0/10,DIRECT,no-resolve')
   range_line=$(line_exact "$file" 'IP-CIDR,100.0.0.0/8,PROXY,no-resolve')
-  if [ -z "$quad_line" ] || [ -z "$range_line" ] || [ "$quad_line" -ge "$range_line" ]; then
-    fail "$file: Quad100 DIRECT rule must appear before the 100/8 PROXY rule"
+  if [ -z "$quad_line" ] || [ -z "$tailscale_line" ] || [ -z "$range_line" ] ||
+     [ "$quad_line" -ge "$range_line" ] || [ "$tailscale_line" -ge "$range_line" ]; then
+    fail "$file: Tailscale DIRECT rules must appear before the 100/8 PROXY rule"
   fi
 
-  if grep -Eq '^tun-excluded-routes = .*100\.(0\.0\.0/8|100\.100\.100/32)' "$file"; then
+  if grep -Eq '^tun-excluded-routes = .*100\.(0\.0\.0/8|64\.0\.0/10|100\.100\.100/32)' "$file"; then
     fail "$file: Tailscale addresses must not be excluded from the tunnel"
   fi
 done

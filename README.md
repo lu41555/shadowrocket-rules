@@ -11,8 +11,8 @@
   - YouTube、Netflix、OpenAI、GitHub、Telegram、X、TikTok、Discord、Reddit、Streaming、Spotify、Twitch、Gaming、Microsoft、Amazon、Cloudflare 等服务单独分组。
   - 每个分组的节点由你在 Shadowrocket 里手动选择。
   - 不包含自动测速或故障转移策略组，节点固定不自动切换。
-  - 除本机 MagicDNS `100.100.100.100` 外，所有 `100.*` 地址固定走手动选择的 `PROXY` 节点。
-  - `*.tailscale.com`、`*.tailscale.io` 和 `*.ts.net` 固定走 `PROXY`。
+  - Tailscale 的 `100.64.0.0/10` 和本机 MagicDNS `100.100.100.100` 直连，其余 `100.*` 地址固定走手动选择的 `PROXY` 节点。
+  - `*.tailscale.com`、`*.tailscale.io` 和 `*.ts.net` 直连。
 
 - `shadowrocket-cn-direct-overseas-proxy-simple.conf`
   - 简洁配置。
@@ -20,8 +20,8 @@
   - 国内域名和中国大陆 IP 直连。
   - 其他所有流量走 Shadowrocket 首页当前选中的具体代理节点。
   - 首页不要选择自动测速、故障转移或订阅分组，否则可能自动切换。
-  - 除本机 MagicDNS `100.100.100.100` 外，所有 `100.*` 地址固定走首页当前选中的代理节点。
-  - `*.tailscale.com`、`*.tailscale.io` 和 `*.ts.net` 固定走当前代理节点。
+  - Tailscale 的 `100.64.0.0/10` 和本机 MagicDNS `100.100.100.100` 直连，其余 `100.*` 地址固定走首页当前选中的代理节点。
+  - `*.tailscale.com`、`*.tailscale.io` 和 `*.ts.net` 直连。
 
 - `shadowrocket-recovery-direct.conf`
   - 恢复配置。
@@ -145,16 +145,16 @@ Netflix = select,PROXY,香港节点,台湾节点,日本节点,新加坡节点,�
 规则顺序如下：
 
 1. 指定国外服务分组优先匹配。
-2. Tailscale 域名 `*.tailscale.com`、`*.tailscale.io`、`*.ts.net` 使用 `PROXY`。
-3. Tailscale 本机 MagicDNS `100.100.100.100/32` 直连。
-4. 其余所有 `100.*` 地址（`100.0.0.0/8`）使用 `PROXY` 走手动固定节点。
+2. Tailscale 域名 `*.tailscale.com`、`*.tailscale.io`、`*.ts.net` 直连。
+3. Tailscale 本机 MagicDNS `100.100.100.100/32` 和地址段 `100.64.0.0/10` 直连。
+4. 其余所有 `100.*` 地址由后续的 `100.0.0.0/8` 规则使用 `PROXY` 走手动固定节点。
 5. 局域网、本机地址直连。
 6. 常见国内域名直连。
 7. Apple 中国大陆常用服务直连。
 8. 中国大陆 IP 使用 `GEOIP,CN,DIRECT` 直连。
 9. 其他所有流量使用 `FINAL,PROXY` 走代理。
 
-注意：`100.100.100.100/32` 是 `100.0.0.0/8` 中唯一的直连例外，用于设备本地 MagicDNS。`100.0.0.0/8` 的范围大于 Tailscale 通常使用的 `100.64.0.0/10`，所以不属于 Tailscale、但以 `100.` 开头的公网地址也会走代理。
+注意：`100.100.100.100/32` 和 `100.64.0.0/10` 必须排在 `100.0.0.0/8` 前面。Shadowrocket 按顺序匹配，因此 Tailscale 地址会直连，不属于 Tailscale、但以 `100.` 开头的其余地址仍会走代理。
 
 ## 出问题时怎么恢复
 
